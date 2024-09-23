@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 binding.alarmTimeTV.text = dateFormat.format(calendar?.time)
                 val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
                 calendar?.timeInMillis?.let { it1 ->
-                    getAlarmPendingIntent()?.let { it2 ->
+                    getAlarmPendingIntent(1)?.let { it2 ->
                         alarmManager.setExact(
                             RTC_WAKEUP,
                             it1,
@@ -70,12 +70,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getAlarmPendingIntent(): PendingIntent? {
+    private fun getAlarmPendingIntent(requestCode: Int): PendingIntent? {
         val intent = Intent(this, AlarmReceiver::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         return  PendingIntent.getBroadcast(
             this,
-            1,
+            requestCode,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
